@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,confusion_matrix
 
-data=pd.read_csv("dataset/Titanic_train_dataset.csv")
+data=pd.read_csv("Logistic-Regression/dataset/Titanic_train_dataset.csv")
 df=pd.DataFrame(data)
 print(df.isnull().sum())
 df["Age"]=df["Age"].fillna(df["Age"].median())
@@ -22,7 +22,7 @@ print(df.head(5))
 X_drop=df.drop(["PassengerId","Name","Ticket","Survived"],axis=1)
 y=df["Survived"]
 X_train,X_test,y_train,y_test=train_test_split(X_drop,y,test_size=0.2,random_state=42)
-model=LogisticRegression(max_iter=1000)
+model=DecisionTreeClassifier(random_state=42,max_depth=3)
 model.fit(X_train,y_train)
 y_pred=model.predict(X_test)
 accuracy=accuracy_score(y_test,y_pred)
@@ -35,8 +35,7 @@ print(precision)
 print(recall)
 print(f1)
 print(confusion)
-print(model.score(X_train, y_train))#training accuracy
-print(model.score(X_test, y_test))#testing accuracy
+print("Training accuracy",model.score(X_train, y_train))#training accuracy
+print("Testing accuracy:",model.score(X_test, y_test))#testing accuracy
 #if training accuracy>>>testing accuracy=overfitting model
 #if training and testing accuracy both are less,then itis underfitting model
-
